@@ -1,9 +1,16 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-function NewsBlock() {
+function NewsBlock(props) {
+  const { title, description } = props;
   return (
-    <div>block</div>
+    <div className="news-block-wrapper">
+      <div className="title">{title}</div>
+      <div className="description">{description}</div>
+    </div>
   );
 }
 
-export default NewsBlock;
+export default connect((state) => ({
+  availableNewsList: state.availableNewsList,
+}))(NewsBlock);
