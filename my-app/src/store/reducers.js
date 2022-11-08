@@ -24,12 +24,10 @@ const newsControlReducer = createReducer(initialNewsListState, {
   [newsActions.newsController]: (state, action) => {
     const { availableScreenHeight, newsBlockHeight } = action.payload;
     const visibleElements = Math.floor(availableScreenHeight / newsBlockHeight);
-    console.log(`MathFloor: ${visibleElements}`);
     let invisibleElements;
     visibleElements % 2 === 0
       ? (invisibleElements = visibleElements)
       : (invisibleElements = visibleElements - 1);
-    console.log(state.availableNewsList.length);
     state.displayedNewsList.newsList.topElements = state.availableNewsList
       .slice(
         state.availableNewsList.length - invisibleElements / 2,

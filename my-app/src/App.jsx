@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/no-array-index-key */
 import React, { useEffect } from 'react';
 import { useDispatch, connect } from 'react-redux';
@@ -10,20 +11,42 @@ function App({ currentNewsList }) {
   const { newsController } = newsActions;
   const dispatch = useDispatch();
   const availableScreenHeight = window.innerHeight;
+  const handleScroll = () => {
+    console.log('here');
+  };
   useEffect(() => {
-    console.log(availableScreenHeight);
     dispatch(getNews())
       .then(() => dispatch(newsController({ availableScreenHeight, newsBlockHeight: 300 })));
   }, [availableScreenHeight]);
   return (
-    <div className="app-wrapper">
-      {currentNewsList.mainElements.map((el) => (
-        <NewsBlock
-          key={currentNewsList.id}
-          title={el.title}
-          description={el.description}
-        />
-      ))}
+    <div className="app-wrapper" onWheel={handleScroll}>
+      <div className="invisible-blocks">
+        {currentNewsList.topElements.map((el) => (
+          <NewsBlock
+            key={currentNewsList.id}
+            title={el.title}
+            description={el.description}
+          />
+        ))}
+      </div>
+      <div className="main-blocks">
+        {currentNewsList.mainElements.map((el) => (
+          <NewsBlock
+            key={currentNewsList.id}
+            title={el.title}
+            description={el.description}
+          />
+        ))}
+      </div>
+      <div className="invisible-blocks">
+        {currentNewsList.bottomElements.map((el) => (
+          <NewsBlock
+            key={currentNewsList.id}
+            title={el.title}
+            description={el.description}
+          />
+        ))}
+      </div>
     </div>
   );
 }
