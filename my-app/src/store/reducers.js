@@ -30,16 +30,34 @@ const newsControlReducer = createReducer(initialNewsListState, {
       : (invisibleElements = visibleElements - 1);
     state.displayedNewsList.newsList.topElements = state.availableNewsList
       .slice(
-        state.availableNewsList.length - invisibleElements / 2,
+        state.availableNewsList.length + state.displayedNewsList.controllerIndex
+        - invisibleElements / 2,
+        state.availableNewsList.length + state.displayedNewsList.controllerIndex,
       );
     state.displayedNewsList.newsList.mainElements = state.availableNewsList.slice(
-      0,
-      visibleElements,
+      0 + state.displayedNewsList.controllerIndex,
+      visibleElements + state.displayedNewsList.controllerIndex,
     );
     state.displayedNewsList.newsList.bottomElements = state.availableNewsList.slice(
-      visibleElements,
-      visibleElements + invisibleElements / 2,
+      visibleElements + state.displayedNewsList.controllerIndex,
+      visibleElements + state.displayedNewsList.controllerIndex + invisibleElements / 2,
     );
+  },
+  [newsActions.scrollTop]: (state, action) => {
+    if (action.payload > state.availableNewsList.length - 1) {
+      const restartElements = state.availableNewsList
+        .splice(
+          0,
+          action.payload - state.availableNewsList.length,
+          state.availableNewsList,
+        );
+      state.availableNewsList.push(...restartElements);
+    } else {
+      state.displayedNewsList.controllerIndex = action.payload;
+    }
+  },
+  [newsActions.scrollBottom]: (state, action) => {
+    state.displayedNewsList.controllerIndex = action.payload;
   },
 });
 

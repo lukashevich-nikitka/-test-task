@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/no-array-index-key */
 import React, { useEffect } from 'react';
@@ -7,17 +8,22 @@ import getNews from './store/thunks';
 import NewsBlock from './components/news_block';
 import newsActions from './store/actions';
 
-function App({ currentNewsList }) {
-  const { newsController } = newsActions;
+function App({ currentNewsList, currentIndexController, availableNewsList }) {
+  const { newsController, scrollTop, scrollBottom } = newsActions;
   const dispatch = useDispatch();
   const availableScreenHeight = window.innerHeight;
-  const handleScroll = () => {
-    console.log('here');
+  const handleScroll = (event) => {
+    (event.deltaY > 0) ? dispatch(scrollTop(currentIndexController + 1))
+      : dispatch(scrollBottom(currentIndexController - 1));
   };
   useEffect(() => {
-    dispatch(getNews())
-      .then(() => dispatch(newsController({ availableScreenHeight, newsBlockHeight: 300 })));
-  }, [availableScreenHeight]);
+    if (!(availableNewsList.length)) {
+      dispatch(getNews())
+        .then(() => dispatch(newsController({ availableScreenHeight, newsBlockHeight: 300 })));
+    } else {
+      dispatch(newsController({ availableScreenHeight, newsBlockHeight: 300 }));
+    }
+  }, [availableScreenHeight, currentIndexController]);
   return (
     <div className="app-wrapper" onWheel={handleScroll}>
       <div className="invisible-blocks">
@@ -54,4 +60,5 @@ function App({ currentNewsList }) {
 export default connect((state) => ({
   availableNewsList: state.availableNewsList,
   currentNewsList: state.displayedNewsList.newsList,
+  currentIndexController: state.displayedNewsList.controllerIndex,
 }))(App);
