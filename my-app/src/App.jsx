@@ -13,11 +13,11 @@ function App({ currentNewsList }) {
   useEffect(() => {
     console.log(availableScreenHeight);
     dispatch(getNews())
-      .then(() => dispatch(newsController({ availableScreenHeight, newsBlockHeight: 500 })));
+      .then(() => dispatch(newsController({ availableScreenHeight, newsBlockHeight: 300 })));
   }, [availableScreenHeight]);
   return (
     <div className="app-wrapper">
-      {currentNewsList[1].map((el) => (
+      {currentNewsList.mainElements.map((el) => (
         <NewsBlock
           key={currentNewsList.id}
           title={el.title}
@@ -30,5 +30,5 @@ function App({ currentNewsList }) {
 
 export default connect((state) => ({
   availableNewsList: state.availableNewsList,
-  currentNewsList: state.displayedNewsList,
+  currentNewsList: state.displayedNewsList.newsList,
 }))(App);

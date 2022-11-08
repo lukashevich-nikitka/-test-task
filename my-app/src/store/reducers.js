@@ -7,11 +7,14 @@ import newsActions from './actions';
 
 const initialNewsListState = {
   availableNewsList: [],
-  displayedNewsList: [
-    [{ title: null, description: null }],
-    [{ title: null, description: null }],
-    [{ title: null, description: null }],
-  ],
+  displayedNewsList: {
+    controllerIndex: 0,
+    newsList: {
+      topElements: [{ title: null, description: null }],
+      mainElements: [{ title: null, description: null }],
+      bottomElements: [{ title: null, description: null }],
+    },
+  },
 };
 
 const newsControlReducer = createReducer(initialNewsListState, {
@@ -26,16 +29,18 @@ const newsControlReducer = createReducer(initialNewsListState, {
     visibleElements % 2 === 0
       ? (invisibleElements = visibleElements)
       : (invisibleElements = visibleElements - 1);
-    state.displayedNewsList[0] = state.availableNewsList.slice(
-      invisibleElements / -2,
-    );
-    state.displayedNewsList[1] = state.availableNewsList.slice(
+    console.log(state.availableNewsList.length);
+    state.displayedNewsList.newsList.topElements = state.availableNewsList
+      .slice(
+        state.availableNewsList.length - invisibleElements / 2,
+      );
+    state.displayedNewsList.newsList.mainElements = state.availableNewsList.slice(
       0,
       visibleElements,
     );
-    state.displayedNewsList[2] = state.availableNewsList.slice(
+    state.displayedNewsList.newsList.bottomElements = state.availableNewsList.slice(
       visibleElements,
-      visibleElements + (invisibleElements / 2),
+      visibleElements + invisibleElements / 2,
     );
   },
 });
