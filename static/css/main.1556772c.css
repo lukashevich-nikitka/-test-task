@@ -1,0 +1,2 @@
+.app-wrapper{height:100vh;position:relative;width:100vw}.main-blocks{display:grid;grid-auto-flow:row;height:100vh;width:100%}.invisible-blocks{position:absolute;top:-600px}*{margin:0;padding:0}.news-block-wrapper{background-position:50%;background-size:cover;box-shadow:12px 12px 2px 1px rgba(0,0,255,.2);color:#fff;display:flex;flex-direction:column;font-weight:600;gap:20px;height:300px;width:100%}.title{font-size:25px;font-weight:700;text-align:center}.description{font-size:10px}.content{font-size:20}
+/*# sourceMappingURL=main.1556772c.css.map*/
